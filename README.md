@@ -9,7 +9,8 @@ A Claude Code plugin that adds a `/journal` skill for development journaling —
 | `/journal` | Write a new entry (default) — summarizes the current session |
 | `/journal <title>` | Write a new entry with a specific title |
 | `/journal search <query>` | Search entries by filename, then full text |
-| `/journal context [N]` | Show the last N entries (default 3) |
+| `/journal last [N]` | Show the last N entries (default 1) |
+| `/journal help` | Show available commands and usage |
 | `/journal check` | Find entries relevant to the current conversation |
 | `/journal init` | Set up the journal directory, README, CLAUDE.md guidance, and first entry |
 
