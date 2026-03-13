@@ -156,43 +156,88 @@ Proactively find journal entries relevant to the current conversation. Designed 
 
 ### `init`
 
-1. Create the `docs/journal/` directory if it doesn't exist.
-2. Write a `README.md` inside the journal directory:
+The init command is **idempotent** — it checks what already exists and only creates what is missing. Run through each step in order, skipping anything that is already in place.
 
-```markdown
-# <Project Name> Development Journal
+1. **Directory:** If `docs/journal/` does not exist, create it.
 
-Chronological log of design decisions, implementation sessions, and architecture changes.
+2. **README.md:** If `docs/journal/README.md` does not exist, write it:
 
-Entries are named `YYYY-MM-DD--NNN-description.md` where `NNN` is a global sequence number.
+   ```markdown
+   # <Project Name> Development Journal
 
-To add an entry: `/journal <title>`
-To search: `/journal search <query>`
-To review recent context: `/journal last [N]`
-For help: `/journal help`
-```
+   Chronological log of design decisions, implementation sessions, and architecture changes.
 
-For `<Project Name>`, read the repo's top-level `README.md` heading or use the directory name.
+   Entries are named `YYYY-MM-DD--NNN-description.md` where `NNN` is a global sequence number.
 
-3. **Write `docs/journal/GUIDE.md`** with the following content:
+   To add an entry: `/journal <title>`
+   To search: `/journal search <query>`
+   To review recent context: `/journal last [N]`
+   For help: `/journal help`
+   ```
+
+   For `<Project Name>`, read the repo's top-level `README.md` heading or use the directory name.
+
+3. **GUIDE.md:** Check whether `docs/journal/GUIDE.md` already exists.
+
+   - **If it does not exist:** write it with the content below.
+   - **If it already exists:** read its current content and compare it to the template below. If it differs, ask the user: *"GUIDE.md already exists but differs from the latest plugin version. Replace it?"* — only overwrite if the user confirms. If the content is already identical, skip silently.
+
+   GUIDE.md template:
 
    ```markdown
    ## Journal
 
-   This project maintains a development journal in `docs/journal/`. Use `/journal` to log decisions.
+   This project maintains a development journal in `docs/journal/`.
+   Entries are named `YYYY-MM-DD--NNN-description.md` (e.g., `2026-03-13--004-fix-plugin-installation.md`).
+
+   ### Commands
+
+   | Command | What it does |
+   |---------|-------------|
+   | `/journal` | Write a new entry — title is auto-generated from the conversation |
+   | `/journal <title>` | Write a new entry with an explicit title |
+   | `/journal search <query>` | Search entries by filename and content |
+   | `/journal last [N]` | Show the last N entries (default 1) |
+   | `/journal check` | Find entries relevant to the current conversation |
+   | `/journal init` | Set up the journal directory and CLAUDE.md @import |
+   | `/journal help` | Print command reference |
+
+   ### When to use the journal
 
    - **Before starting work:** Run `/journal check` to surface past decisions relevant to the files or topics you're about to touch.
-   - **Before architectural decisions:** Search the journal (`/journal search <topic>`) to see if this was discussed before.
-   - **After completing work:** Write a journal entry (`/journal`) capturing what was done and why.
+   - **Before architectural decisions:** Run `/journal search <topic>` to see if the topic was discussed before.
+   - **After completing work:** Run `/journal` to capture what was done and why.
+
+   ### Examples
+
+   ```
+   /journal                          # auto-title from conversation
+   /journal Switched to monorepo     # explicit title
+   /journal search auth              # find past auth decisions
+   /journal last 3                   # review last 3 entries
+   /journal check                    # what's relevant right now?
+   ```
    ```
 
-4. **Update or create `CLAUDE.md`** in the project root:
-   - If `CLAUDE.md` already exists: append the line `@docs/journal/GUIDE.md` to the end of the file (on its own line).
-   - If `CLAUDE.md` does not exist: create it with just the line `@docs/journal/GUIDE.md`.
+4. **CLAUDE.md @import:** Check whether the project root `CLAUDE.md` already contains the line `@docs/journal/GUIDE.md`.
+   - If `CLAUDE.md` does not exist: create it with just that line.
+   - If `CLAUDE.md` exists but does not contain the `@import`: append the line `@docs/journal/GUIDE.md` to the end of the file (on its own line).
+   - If `CLAUDE.md` already contains the `@import`: skip.
 
-5. **Create the first journal entry** using the standard write flow (see "Write a new entry" above). Title: "Journal initialized". The entry should document that the journal system was set up and describe the project briefly (inferred from README or directory name).
+5. **First journal entry:** Check whether any journal entries (`docs/journal/????-??-??--*`) already exist.
+   - If no entries exist: create the first entry using the standard write flow. Title: "Journal initialized". The entry should document that the journal system was set up and describe the project briefly (inferred from README or directory name).
+   - If entries already exist: skip — do not create a duplicate "Journal initialized" entry.
 
-6. Confirm with: the journal path created, that `docs/journal/GUIDE.md` was written and `@import`ed into `CLAUDE.md`, and the first entry filename.
+6. **Report** what was done. List each component and whether it was created, updated, skipped (already present), or skipped (user declined). Example:
+
+   ```
+   Journal init complete:
+   - docs/journal/         — already existed
+   - docs/journal/README.md — created
+   - docs/journal/GUIDE.md  — updated (user confirmed)
+   - CLAUDE.md @import       — already present
+   - First entry             — skipped (entries already exist)
+   ```
 
 ## Style Rules
 
