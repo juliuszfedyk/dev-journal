@@ -4,7 +4,7 @@
   "plugins": [
     {
       "name": "dev-journal",
-      "source": ".",
+      "source": "./",
       "description": "Development journal for tracking decisions, sessions, and architecture changes"
     }
   ]
