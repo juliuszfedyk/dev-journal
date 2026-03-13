@@ -19,7 +19,7 @@ Parse `$ARGUMENTS` to determine the command:
 | `/journal search <query>` | Search journal by filename, then full text |
 | `/journal last [N]` | Show last N entries (default 1) for context |
 | `/journal check` | Find journal entries relevant to the current conversation |
-| `/journal init` | Create the journal directory, README, CLAUDE.md guidance, and first entry |
+| `/journal init` | Create the journal directory, README, GUIDE.md, CLAUDE.md @import, and first entry |
 | `/journal help` | Show available commands and usage |
 
 ## Journal Location
@@ -115,7 +115,7 @@ Print the following command reference to the user:
 | `/journal search <query>` | Search entries by filename and content |
 | `/journal last [N]` | Show last N entries (default 1) |
 | `/journal check` | Find entries relevant to the current conversation |
-| `/journal init` | Set up the journal directory, README, and CLAUDE.md guidance |
+| `/journal init` | Set up the journal directory, README, GUIDE.md, and CLAUDE.md @import |
 | `/journal help` | Show this help message |
 
 Entries are stored in `docs/journal/` as `YYYY-MM-DD--NNN-description.md`.
@@ -174,27 +174,25 @@ For help: `/journal help`
 
 For `<Project Name>`, read the repo's top-level `README.md` heading or use the directory name.
 
-3. **Update or create `CLAUDE.md`** in the project root:
-   - If `CLAUDE.md` already exists: append the journal guidance section below to the end of the file.
-   - If `CLAUDE.md` does not exist: create it with the journal guidance section as its contents.
-
-   Journal guidance section to add:
+3. **Write `docs/journal/GUIDE.md`** with the following content:
 
    ```markdown
    ## Journal
 
-   This project maintains a development journal in `<journal-dir>/`. Use `/journal` to log decisions.
+   This project maintains a development journal in `docs/journal/`. Use `/journal` to log decisions.
 
    - **Before starting work:** Run `/journal check` to surface past decisions relevant to the files or topics you're about to touch.
    - **Before architectural decisions:** Search the journal (`/journal search <topic>`) to see if this was discussed before.
    - **After completing work:** Write a journal entry (`/journal`) capturing what was done and why.
    ```
 
-   Replace `<journal-dir>` with `docs/journal`.
+4. **Update or create `CLAUDE.md`** in the project root:
+   - If `CLAUDE.md` already exists: append the line `@docs/journal/GUIDE.md` to the end of the file (on its own line).
+   - If `CLAUDE.md` does not exist: create it with just the line `@docs/journal/GUIDE.md`.
 
-4. **Create the first journal entry** using the standard write flow (see "Write a new entry" above). Title: "Journal initialized". The entry should document that the journal system was set up and describe the project briefly (inferred from README or directory name).
+5. **Create the first journal entry** using the standard write flow (see "Write a new entry" above). Title: "Journal initialized". The entry should document that the journal system was set up and describe the project briefly (inferred from README or directory name).
 
-5. Confirm with: the journal path created, whether CLAUDE.md was created or updated, and the first entry filename.
+6. Confirm with: the journal path created, that `docs/journal/GUIDE.md` was written and `@import`ed into `CLAUDE.md`, and the first entry filename.
 
 ## Style Rules
 

@@ -12,13 +12,13 @@ A Claude Code plugin that adds a `/journal` skill for development journaling —
 | `/journal last [N]` | Show the last N entries (default 1) |
 | `/journal help` | Show available commands and usage |
 | `/journal check` | Find entries relevant to the current conversation |
-| `/journal init` | Set up the journal directory, README, CLAUDE.md guidance, and first entry |
+| `/journal init` | Set up the journal directory, README, GUIDE.md, CLAUDE.md @import, and first entry |
 
 ## Features
 
 - **Proactive context surfacing** — `/journal check` is designed to be invoked automatically when starting work or before architectural decisions, not just on explicit command.
 - **Auto-init** — Writing your first entry automatically runs `init` if no journal exists yet.
-- **CLAUDE.md integration** — `init` adds journal guidance to your project's `CLAUDE.md`, so Claude knows to check past decisions before making new ones.
+- **CLAUDE.md integration** — `init` writes journal guidance to `docs/journal/GUIDE.md` and adds an `@import` reference in your project's `CLAUDE.md`, so Claude knows to check past decisions before making new ones.
 - **Two-phase search** — Searches filenames first, then falls back to full-text grep with context excerpts.
 
 ## Entry format
