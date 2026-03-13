@@ -52,4 +52,8 @@ This plugin contains no runtime code. The entire skill is defined in `skills/jou
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
+
+## Privacy
+
+This plugin collects no data. See [PRIVACY.md](PRIVACY.md) for details.
