@@ -1,0 +1,11 @@
+{
+  "name": "dev-journal",
+  "owner": { "name": "Juliusz Fedyk" },
+  "plugins": [
+    {
+      "name": "dev-journal",
+      "source": ".",
+      "description": "Development journal for tracking decisions, sessions, and architecture changes"
+    }
+  ]
+}

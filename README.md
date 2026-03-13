@@ -36,17 +36,9 @@ Each entry contains a structured template: summary, what changed, and context/ra
 
 ## Installation
 
-**From GitHub:**
-
 ```sh
-/plugin marketplace add https://github.com/juliuszfedyk/dev-journal.git
-claude plugin install dev-journal
-```
-
-**Local (development):**
-
-```sh
-claude --plugin-dir /path/to/this/repo
+/plugin marketplace add juliuszfedyk/dev-journal
+/plugin install dev-journal@dev-journal
 ```
 
 ## How it works
