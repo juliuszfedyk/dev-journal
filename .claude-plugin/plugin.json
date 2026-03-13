@@ -1,6 +1,6 @@
 {
   "name": "dev-journal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Development journal for tracking decisions, sessions, and architecture changes",
   "author": {
     "name": "Juliusz Fedyk"
