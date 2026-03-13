@@ -1,7 +1,7 @@
 ---
 name: journal
 description: "Write, search, and review project development journal entries. Use when: logging what was done in a session, searching past decisions, or retrieving context from prior work. PROACTIVE: When starting work on a topic or before making architectural decisions, invoke `/journal check` to surface relevant past decisions and context."
-argument-hint: "<command> [args] — write | search | context | check | init"
+argument-hint: "<command> [args] — write | search | last | check | init | help"
 ---
 
 # Development Journal Manager
@@ -17,9 +17,10 @@ Parse `$ARGUMENTS` to determine the command:
 | `/journal` (no args) | Write a new journal entry (default action) |
 | `/journal <title>` | Write a new entry with the given title |
 | `/journal search <query>` | Search journal by filename, then full text |
-| `/journal context [N]` | Show last N entries (default 3) for context |
+| `/journal last [N]` | Show last N entries (default 1) for context |
 | `/journal check` | Find journal entries relevant to the current conversation |
 | `/journal init` | Create the journal directory, README, CLAUDE.md guidance, and first entry |
+| `/journal help` | Show available commands and usage |
 
 ## Journal Location
 
@@ -41,7 +42,7 @@ The sequence number resets for each day. To determine the next number: find all 
 
 ### Default: Write a new entry
 
-The default action (no subcommand, or any text that isn't `search`, `context`, `check`, or `init`) is to **write a new journal entry**.
+The default action (no subcommand, or any text that isn't `search`, `last`, `check`, `help`, or `init`) is to **write a new journal entry**.
 
 **Title generation:** If the user provides a title after `/journal`, use it. If `/journal` is invoked with no arguments, generate a title yourself by reviewing what was accomplished in the current conversation — look at files modified, decisions made, and topics discussed. The title should be concise (3-8 words) and describe the main outcome, not the process.
 
@@ -72,8 +73,7 @@ The default action (no subcommand, or any text that isn't `search`, `context`, `
 <Why this matters. Link to related entries or docs if relevant.>
 ```
 
-6. Show the user the proposed entry content and filename for review before finalizing.
-7. Respond with: the filename, sequence number, and a one-line confirmation.
+6. Respond with: the filename, sequence number, and a one-line confirmation.
 
 ### `search <query>`
 
@@ -94,12 +94,34 @@ Present results as a table:
 | 011 | 2026-03-05 | Monolithic DSP + ESP32 display | content: "DESPEE" on line 42 |
 ```
 
-### `context [N]`
+### `last [N]`
 
 1. List all journal entries sorted by filename (which gives chronological + sequence order).
-2. Read the last N entries (default 3).
+2. Read the last N entries (default 1).
 3. For each entry, output: sequence number, date, title, and a 1-2 sentence summary (from the Summary section or first paragraph).
 4. If N is 1, also print the full entry content.
+
+### `help`
+
+Print the following command reference to the user:
+
+```
+## Journal Commands
+
+| Command | Description |
+|---------|-------------|
+| `/journal` | Write a new entry (auto-generates title from conversation) |
+| `/journal <title>` | Write a new entry with the given title |
+| `/journal search <query>` | Search entries by filename and content |
+| `/journal last [N]` | Show last N entries (default 1) |
+| `/journal check` | Find entries relevant to the current conversation |
+| `/journal init` | Set up the journal directory, README, and CLAUDE.md guidance |
+| `/journal help` | Show this help message |
+
+Entries are stored in `docs/journal/` as `YYYY-MM-DD--NNN-description.md`.
+```
+
+No other action is needed — just display the help text and stop.
 
 ### `check`
 
@@ -144,9 +166,10 @@ Chronological log of design decisions, implementation sessions, and architecture
 
 Entries are named `YYYY-MM-DD--NNN-description.md` where `NNN` is a global sequence number.
 
-To add an entry: `/journal write <title>`
+To add an entry: `/journal <title>`
 To search: `/journal search <query>`
-To review recent context: `/journal context [N]`
+To review recent context: `/journal last [N]`
+For help: `/journal help`
 ```
 
 For `<Project Name>`, read the repo's top-level `README.md` heading or use the directory name.

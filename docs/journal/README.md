@@ -6,4 +6,4 @@ Entries are named `YYYY-MM-DD--NNN-description.md` where `NNN` is a per-day sequ
 
 To add an entry: `/journal write <title>`
 To search: `/journal search <query>`
-To review recent context: `/journal context [N]`
+To review recent context: `/journal last [N]`
