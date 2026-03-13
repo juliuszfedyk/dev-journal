@@ -36,15 +36,18 @@ Each entry contains a structured template: summary, what changed, and context/ra
 
 ## Installation
 
+**From GitHub:**
+
+```sh
+/plugin marketplace add https://github.com/juliuszfedyk/dev-journal.git
+claude plugin install dev-journal
+```
+
 **Local (development):**
 
 ```sh
 claude --plugin-dir /path/to/this/repo
 ```
-
-**From marketplace:**
-
-Install via the Claude Code plugin marketplace (when available).
 
 ## How it works
 
