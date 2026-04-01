@@ -1,6 +1,12 @@
 ---
 name: journal
-description: "Write, search, and review project development journal entries. Use when: logging what was done in a session, searching past decisions, or retrieving context from prior work. PROACTIVE: When starting work on a topic or before making architectural decisions, invoke `/journal check` to surface relevant past decisions and context."
+description: >
+  Development journal: write, search, and retrieve project decisions and session logs.
+  USE WHEN: user says "log", "journal", "write entry", "record what we did", "what did we
+  decide about", "search journal", "show last entries", "check context", "what have we done".
+  USE PROACTIVELY: invoke /journal check at the start of any session or before any
+  architectural decision (new file, API design, protocol choice) without being asked.
+  DO NOT USE for: general file writing, git commits, or inline code comments.
 argument-hint: "<command> [args] — write | search | last | check | init | help"
 ---
 
@@ -160,10 +166,19 @@ The init command is **idempotent** — it checks what already exists and only cr
 
 1. **Directory:** If `docs/journal/` does not exist, create it.
 
-2. **README.md:** If `docs/journal/README.md` does not exist, write it:
+2. **README.md:** If `docs/journal/README.md` does not exist:
+
+   Before writing anything:
+   1. Use Read on the root `README.md`. Extract the first `# Heading` as the project name
+      and the first non-heading paragraph as the project purpose.
+   2. If no root README exists, use the current working directory name as the project name.
+   3. Write `docs/journal/README.md` — construct the content from what you just read.
+      Do NOT use placeholder text like `<Project Name>`. The heading must be the actual name.
+
+   Template (fill in the actual project name):
 
    ```markdown
-   # <Project Name> Development Journal
+   # <actual project name> Development Journal
 
    Chronological log of design decisions, implementation sessions, and architecture changes.
 
@@ -174,8 +189,6 @@ The init command is **idempotent** — it checks what already exists and only cr
    To review recent context: `/journal last [N]`
    For help: `/journal help`
    ```
-
-   For `<Project Name>`, read the repo's top-level `README.md` heading or use the directory name.
 
 3. **GUIDE.md:** Check whether `docs/journal/GUIDE.md` already exists.
 
@@ -225,7 +238,12 @@ The init command is **idempotent** — it checks what already exists and only cr
    - If `CLAUDE.md` already contains the `@import`: skip.
 
 5. **First journal entry:** Check whether any journal entries (`docs/journal/????-??-??--*`) already exist.
-   - If no entries exist: create the first entry using the standard write flow. Title: "Journal initialized". The entry should document that the journal system was set up and describe the project briefly (inferred from README or directory name).
+   - If no entries exist: create the first entry using the standard write flow. Do not use a hardcoded title. Instead:
+     1. From the root README you already read, extract: project name + one-sentence purpose.
+     2. Derive a title: "<ProjectName> — journal initialized" (e.g. "dev-journal — journal initialized").
+     3. In the Summary section, describe the project briefly in your own words using the README context.
+        Reference key directories or config files you observed (e.g. `docs/`, `skills/`, `CLAUDE.md`).
+     4. Do NOT reproduce the README verbatim — synthesize a 2-3 sentence summary.
    - If entries already exist: skip — do not create a duplicate "Journal initialized" entry.
 
 6. **Report** what was done. List each component and whether it was created, updated, skipped (already present), or skipped (user declined). Example:
@@ -247,6 +265,29 @@ The init command is **idempotent** — it checks what already exists and only cr
 - Keep summaries to 1-3 sentences.
 - Reference other docs with backtick-quoted relative paths (e.g., `docs/hardware.md`).
 - Do not duplicate large blocks of content from other docs — reference them.
+
+## Invocation Rules
+
+These rules apply at all times, not just when explicitly invoked via `/journal`:
+
+- **Session start:** Before writing any code or making any change, silently run `check`
+  to surface relevant past decisions. Do not announce this — just do it and surface results
+  only if something relevant is found.
+
+- **Post-work reminder:** After any significant block of work (file edits, architectural
+  decisions, debugging sessions), offer: *"Want me to write a journal entry for this session?"*
+  Do not skip this offer even if the user did not mention journaling.
+
+- **Architectural gate:** If the user is about to make a choice between two technical
+  approaches (library, protocol, structure), first run `/journal search <topic>` silently
+  and report any past decision before proceeding.
+
+## Anti-patterns to avoid
+
+- Do not skip `check` because "the user didn't ask for it."
+- Do not create a journal entry without reading existing entries first to avoid duplicates.
+- Do not write generic summaries — every entry must capture *why* a decision was made,
+  not just *what* changed.
 
 ## Important
 
